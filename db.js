@@ -1,50 +1,20 @@
-export const videos = [
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+mongoose.connect(
+    process.env.MONGO_URL,
     {
-        id:3322123,
-        title:"Video awesome",
-        description:"this is Something I Love1",
-        views:24,
-        videoFile:"https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4",
-        creator:{
-            id:123123,
-            name:"Nicolas",
-            email:"nico@las.com"
-        }
-    },
-    {
-        id:543534534,
-        title:"Video vvbbbb",
-        description:"this is Something I Love2",
-        views:24,
-        videoFile:"https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4",
-        creator:{
-            id:123123,
-            name:"Nicolas",
-            email:"nico@las.com"
-        }
-    },
-    {
-        id:555555,
-        title:"Video hggff",
-        description:"this is Something I Love3",
-        views:24,
-        videoFile:"https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4",
-        creator:{
-            id:123123,
-            name:"Nicolas",
-            email:"nico@las.com"
-        }
-    },
-    {
-        id:78789889,
-        title:"Video aqweee232",
-        description:"this is Something I Love4",
-        views:24,
-        videoFile:"https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4",
-        creator:{
-            id:123123,
-            name:"Nicolas",
-            email:"nico@las.com"
-        }
+        useNewUrlParser: true,
+        useFindAndModify: false
     }
-]
+);
+
+const db = mongoose.connection;
+
+const handleOpen = () => console.log("Connect To DB ❤");
+const handleError = error => console.log(`❌ Error on DB Conntextion:${error}`);
+
+db.once("open", handleOpen);
+db.on("error", handleError);
