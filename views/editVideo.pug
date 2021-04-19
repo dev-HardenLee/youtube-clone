@@ -3,9 +3,9 @@ include mixins/videoBlock
 
 block content
     div.form-container
-        form(action=routes.edit_video(video.id), method="post", enctype="multipart/form-data")
+        form(action=routes.edit_video(video.id), method="post")
             label(for="file") Video File
             input(type="text", placeholder="Title", name="title", required = true, value=video.title)
             textarea(name="description", placeholder="Description", required = true)=video.description
             input(type="submit", value="Update Video", required = true)
-            a.form-container__link.form-container__link--delete(href=`/videos${routes.deleteVideo}`) Edit Video
+            a.form-container__link.form-container__link--delete(href=routes.delete_video(video.id)) Delete Video

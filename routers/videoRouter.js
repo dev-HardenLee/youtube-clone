@@ -32,7 +32,7 @@ videoRouter.post(routes.edit_video()  , postEditVideo);
 /**
  * Delete
  */
-videoRouter.get(routes.delete_video, delete_video);
+videoRouter.get(routes.delete_video(), delete_video);
 
 
 export default videoRouter;
