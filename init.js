@@ -1,10 +1,12 @@
-import "./db.js"
-import app from "./app";
-import dotenv from "dotenv";
 import "./models/Video";
 import "./models/Comment";
-
+import "./models/User";
+import dotenv from "dotenv";
 dotenv.config();
+import "./db.js";
+import app from "./app";
+
+
 
 
 
