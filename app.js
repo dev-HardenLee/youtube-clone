@@ -3,6 +3,7 @@ import cookieParser         from "cookie-parser";
 import express              from "express";
 import passport             from "passport";
 import session              from "express-session";
+import MongoStore           from "connect-mongo";
 import helmet               from "helmet";
 import morgan               from "morgan";
 import globalRouter         from "./routers/globalRouter";
@@ -14,7 +15,6 @@ import { localsMiddleware } from "./middlewares";
 import "./passport";
 
 const app = express();
-
 /*
 * middleware
 */
@@ -28,7 +28,8 @@ app.use(morgan("dev"));
 app.use(session({
     secret:process.env.COOKIE_SECRET,
     resave:true,
-    saveUninitialized:false
+    saveUninitialized:false,
+    store: MongoStore.create({mongoUrl:process.env.MONGO_URL})
 }));
 app.use(passport.initialize());
 app.use(passport.session());
