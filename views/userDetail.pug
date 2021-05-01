@@ -4,5 +4,11 @@ include mixins/videoBlock
 block content
     div.user-profile
         div.user-profile__header
-            img.avatar(src=user.avatarImgUrl)
+            img.u-avatar(src=user.avatarImgUrl)
             h4.profile__username=user.name
+        if user._id == loggedUser._id
+            div.user-profile__btns
+                a(href=`/users${routes.edit_profile}`)
+                    button ✏ Edit Profile
+                a(href=`/users${routes.change_password}`)
+                    button ✏ Change Password

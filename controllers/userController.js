@@ -117,7 +117,7 @@ export const kakaoLoginCallBack = async(_, __, profile, cb) => {
     const imgUrl      = kakaoAccount.profile.profile_image_url;
     const kakaoEmail  = kakaoAccount.email;
     try{
-        const user = await User.findOne({kakaoEmail});
+        const user = await User.findOne({email:kakaoEmail});
         if(user){
             user.kakaoId = id;
             user.avatarImgUrl = imgUrl;
@@ -127,7 +127,7 @@ export const kakaoLoginCallBack = async(_, __, profile, cb) => {
             const newUser = await User.create({
                 email:kakaoEmail,
                 name,
-                facebookId:id,
+                kakaoId:id,
                 avatarImgUrl:imgUrl
             });
             return cb(null, newUser);
@@ -154,8 +154,9 @@ export const user_detail = async(req, res) => {
     const {params:{id}}=req;
     try{
         const user = await User.findById(id);
-        res.render("userDetail", {pageTitle: "User Detail"}, user);
+        res.render("userDetail", {pageTitle: "User Detail", user});
     }catch(error){
+        console.log(error);
         res.redirect(routes.home);
     }
 }
