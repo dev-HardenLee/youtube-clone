@@ -4,9 +4,10 @@ import passportLocalMongoose from "passport-local-mongoose";
 const UserSchema = new mongoose.Schema({
     name : String,
     email : String,
-    avatarUrl : String,
+    avatarImgUrl : String,
     facebookId : Number,
-    githubId : Number
+    githubId : Number,
+    kakaoId : Number
 });
 
 UserSchema.plugin(passportLocalMongoose, {usernameField:"email"});

@@ -38,22 +38,24 @@ export const githubLogin = passport.authenticate("github");
 
 export const githubLoginCallBack = async(_, __, profile, cb) => {
     const {
-        _json : {id, avatar_url, name, email}
+        _json : {id, avatar_url:avatarUrl, name, email}
     } = profile;
     try{
         const user = await User.findOne({email});
         if(user){
             user.githubId = id;
+            user.avatarImgUrl = avatarUrl;
             user.save();
             return cb(null, user);
+        }else{
+            const newUser = await User.create({
+                email,
+                name,
+                githubId:id,
+                avatarImgUrl:avatarUrl
+            });
+            return cb(null, newUser);
         }
-        const newUser = await User.create({
-            email,
-            name,
-            githubId:id,
-            avartarUrl : avatar_url
-        });
-        return cb(null, newUser);
     }catch(error){
         return cb(error);
     }
@@ -63,10 +65,99 @@ export const postGithubLogIn = (req, res) => {
     res.redirect(routes.home);
 }
 
+export const facebookLogin = passport.authenticate('facebook');
+
+export const facebookLoginCallBack = async(_, __, profile, cb) => {
+    const{
+        _json:{id, name, email}
+    } = profile;
+    const imgUrl = profile._json.picture.data.url;
+    try{
+        const user = await User.findOne({email});
+        if(user){
+            user.facebookId = id;
+            user.avatarImgUrl = imgUrl;
+            user.save();
+            return cb(null, user);
+        }else{
+            const newUser = await User.create({
+                email,
+                name,
+                facebookId:id,
+                avatarImgUrl:imgUrl
+            });
+            return cb(null, newUser);
+        }
+    }catch(error){
+        return cb(error);
+    }
+}
+
+export const postFacebookLogin = (req, res) => {
+    res.redirect(routes.home);
+}
+
+export const instagramLogin = passport.authenticate('instagram');
+
+export const instagramLoginCallBack = (accessToken, refreshToken, profile, cb) => {
+    console.log(accessToken, refreshToken, profile, cb);
+}
+
+export const postInstagramLogin = (req, res) => {
+    res.redirect(routes.home);
+}
+
+export const kakaoLogin = passport.authenticate('kakao');
+
+export const kakaoLoginCallBack = async(_, __, profile, cb) => {
+    const{
+        _json:{id, kakao_account:kakaoAccount}
+    } = profile;
+    const name        = kakaoAccount.profile.nickname;
+    const imgUrl      = kakaoAccount.profile.profile_image_url;
+    const kakaoEmail  = kakaoAccount.email;
+    try{
+        const user = await User.findOne({kakaoEmail});
+        if(user){
+            user.kakaoId = id;
+            user.avatarImgUrl = imgUrl;
+            user.save();
+            return cb(null, user);
+        }else{
+            const newUser = await User.create({
+                email:kakaoEmail,
+                name,
+                facebookId:id,
+                avatarImgUrl:imgUrl
+            });
+            return cb(null, newUser);
+        }
+    }catch(error){
+        return cb(error);
+    }
+}
+
+export const postKakaoLogin = (req, res) => {
+    res.redirect(routes.home);
+}
+
 export const logout = (req, res) => {
     req.logout();
     res.redirect(routes.home);
 }
-export const user_detail      = (req, res) => res.render("userDetail");
+
+export const getMe = (req, res) => {
+    res.render("userDetail", {pageTitle: "User Detail", user:req.user});
+}
+
+export const user_detail = async(req, res) => {
+    const {params:{id}}=req;
+    try{
+        const user = await User.findById(id);
+        res.render("userDetail", {pageTitle: "User Detail"}, user);
+    }catch(error){
+        res.redirect(routes.home);
+    }
+}
 export const edit_profile     = (req, res) => res.render("editProfile");
 export const change_password  = (req, res) => res.render("changePassword");

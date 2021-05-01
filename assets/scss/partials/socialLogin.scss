@@ -12,9 +12,6 @@
         &:not(:last-child){
             margin-bottom: 15px;
         }
-        a {
-            color:white;
-        }
         span{
             margin-right: 10px;
             font-size: 20px;
@@ -22,10 +19,20 @@
     }
     .social-login__github{
         background-color: $black;
-        color:white;
+        a {
+            color:white;
+        }
     }
     .social-login__facebook{
         background-color: #3a5998;
-        color:white;
+        a {
+            color:white;
+        }
+    }
+    .social-login__kakao{
+        background-color: #FFEA00;
+        a {
+            color:black;
+        }
     }
 }

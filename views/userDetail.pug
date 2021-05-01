@@ -2,3 +2,7 @@ extends layouts/main.pug
 include mixins/videoBlock
 
 block content
+    div.user-profile
+        div.user-profile__header
+            img.avatar(src=user.avatarImgUrl)
+            h4.profile__username=user.name
