@@ -120,7 +120,7 @@ export const kakaoLoginCallBack = async(_, __, profile, cb) => {
         const user = await User.findOne({email:kakaoEmail});
         if(user){
             user.kakaoId = id;
-            user.avatarImgUrl = imgUrl;
+            user.avatarImgUrl = user.avatarImgUrl ? user.avatarImgUrl : imgUrl;
             user.save();
             return cb(null, user);
         }else{
@@ -160,5 +160,27 @@ export const user_detail = async(req, res) => {
         res.redirect(routes.home);
     }
 }
-export const edit_profile     = (req, res) => res.render("editProfile");
+
+export const getEditProfile  = (req, res) => {
+    res.render("editProfile");
+}
+
+export const postEditProfile = async(req, res) => {
+    const {
+        body : {name, email},
+        file
+    } = req;
+    try{
+        const user = await User.findByIdAndUpdate(req.user._id,{
+            name,
+            email,
+            avatarImgUrl: file ? file.path : req.user.avatarImgUrl
+        });
+        res.redirect(routes.me);
+    }catch(error){
+        console.log(error);
+        res.render("editProfile", {pageTitle : "Edit Profile"});
+    }
+}
+
 export const change_password  = (req, res) => res.render("changePassword");

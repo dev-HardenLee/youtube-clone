@@ -34,4 +34,8 @@ clientID: process.env.KAKAO_ID,
 callbackURL: `http://localhost:4000${routes.kakaoCallBack}`
 }, kakaoLoginCallBack));
 passport.serializeUser((user, done) => done(null, user));
-passport.deserializeUser((user, done) => done(null, user));
+passport.deserializeUser((id, done) => {
+  User.findById(id, (error, user) => {
+    done(error, user);
+  });
+});
